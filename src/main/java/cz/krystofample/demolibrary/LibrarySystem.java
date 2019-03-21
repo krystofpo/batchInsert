@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +32,8 @@ public class LibrarySystem {
     private User persistedUser;
 
     private List<Book> persistedBooks = new ArrayList<>();
+
+    private Loan persistedLoan;
 
     @Transactional
     public void borrowBooks(List<Book> books, User user) {
@@ -111,9 +114,43 @@ public class LibrarySystem {
     }
 
     @Transactional
-    public void returnBooks(List<Book> books) {
-        validateAndLoadBooks(books);
+    public void returnBook(Book book) {
+        validateAndLoadBooks(Arrays.asList(book));
+        loadLoan();
+        persistedUser = null;
+        persistedUser = persistedLoan.getUser();
+        removeLoanFromBook();
+        removeBookFromLoan();
+        ifLoanIsEmptyRemoveFromUserAndDeleteIt();
+        ifUserHasNoLoansChangeStatus();
 
 
+    }
+
+    private void ifUserHasNoLoansChangeStatus() {
+        if (persistedUser.getLoans().size() == 0) {
+            persistedUser.setHasLoans(false);
+        }
+    }
+
+    private void ifLoanIsEmptyRemoveFromUserAndDeleteIt() {
+        if (persistedLoan.getBooks().size() == 0) {
+            persistedLoan.setUser(null);
+            persistedUser.getLoans().remove(persistedLoan);
+            loanRepo.delete(persistedLoan);
+        }
+    }
+
+    private void removeBookFromLoan() {
+        persistedLoan.getBooks().remove(persistedBooks.get(0));
+    }
+
+    private void removeLoanFromBook() {
+        persistedBooks.get(0).setLoan(null);
+    }
+
+    private void loadLoan() {
+        persistedLoan = null;
+        persistedLoan = persistedBooks.get(0).getLoan();
     }
 }

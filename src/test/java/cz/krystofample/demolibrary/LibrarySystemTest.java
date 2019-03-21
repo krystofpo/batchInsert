@@ -120,7 +120,7 @@ public class LibrarySystemTest {
 
     @Test
     @Transactional
-    public void returnBooks() {
+    public void returnBook() {
 
         // given
         bookRepo.deleteAll();
@@ -150,7 +150,7 @@ public class LibrarySystemTest {
         //---------------- when
 
 
-        librarySystem.returnBooks(Arrays.asList(book1));
+        librarySystem.returnBook(book1);
 
 
         // ----------then
@@ -172,7 +172,7 @@ public class LibrarySystemTest {
 
         //======== second return, loan1 deleted, loan2 exists
 
-        librarySystem.returnBooks(Arrays.asList(book2));
+        librarySystem.returnBook(book2);
 
         //==========then
 
@@ -189,7 +189,8 @@ public class LibrarySystemTest {
 
         //------------  return, no books are on loan
 
-        librarySystem.returnBooks(Arrays.asList(book3, book4));
+        librarySystem.returnBook(book3);
+        librarySystem.returnBook(book4);
 
         //--------------then
 

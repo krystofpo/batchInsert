@@ -63,7 +63,13 @@ public class LibrarySystemTest {
 
         User user = testUtil.persistAndReturnNewUser();
 
+
+        // when
+
         librarySystem.borrowBooks(Arrays.asList(book1, book2), user);
+
+        //then
+        user = testUtil.reloadUser(user);
 
         assertTrue(user.getLoans().size() == 1);
 
@@ -71,10 +77,17 @@ public class LibrarySystemTest {
 
         assertTrue(loan.getUser().equals(user));
 
-        assertTrue(book1.getLoans().get(0).equals(loan));
-        assertTrue(book2.getLoans().get(0).equals(loan));
+        assertTrue(book1.getLoan().equals(loan));
+        assertTrue(book2.getLoan().equals(loan));
+
+        assertTrue(loan.getBooks().size() == 2);
+        assertTrue(loan.getBooks().contains(book1));
+        assertTrue(loan.getBooks().contains(book2));
 
         assertTrue(loanRepo.count() == 1L);
+
+
+        //given
 
         Book book3 = testUtil.persistAndReturnNewBook();
         Book book4 = testUtil.persistAndReturnNewBook();
@@ -96,7 +109,11 @@ public class LibrarySystemTest {
         Loan loan2 = user.getLoans().stream().filter(L -> !L.equals(loan)).collect(Collectors.toList()).get(0);
         assertTrue(loan2.getUser().equals(user));
 
-        assertTrue(book3.getLoans().get(0).equals(loan2));
+        assertTrue(book3.getLoan().equals(loan2));
+        assertTrue(loan2.getBooks().size() == 2);
+        assertTrue(loan2.getBooks().contains(book3));
+        assertTrue(loan2.getBooks().contains(book4));
+
         assertTrue(user.hasLoans());
 
     }
@@ -138,28 +155,39 @@ public class LibrarySystemTest {
 
         // ----------then
 
-
+        user = testUtil.reloadUser(user);
         book1 = testUtil.reloadBook(book1);
-        assertTrue(book1.getLoans().size() == 0);
 
+        loan = testUtil.reloadLoan(loan);
 
-        assertTrue(loan.getUser().equals(user));
+        assertTrue(book1.getLoan() == null);
+
         assertTrue(user.getLoans().contains(loan));
+        assertTrue(user.getLoans().size() == 2);
         assertTrue(loanRepo.count() == 2L);
 
-        //======== second return
+        assertTrue(loan.getBooks().size() == 1);
+        assertTrue(loan.getBooks().contains(book2));
+        assertTrue(loan.getUser().equals(user));
+
+        //======== second return, loan1 deleted, loan2 exists
 
         librarySystem.returnBooks(Arrays.asList(book2));
 
         //==========then
 
-
+        user = testUtil.reloadUser(user);
         book2 = testUtil.reloadBook(book2);
-        assertTrue(book2.getLoans().size() == 0);
+        Loan loan2 = loanRepo.findAll().iterator().next();
+
+        assertTrue(book2.getLoan() == null);
+
 
         assertTrue(loanRepo.count() == 1L);
+        assertTrue(user.getLoans().size() == 1);
+        assertTrue(user.getLoans().contains(loan2));
 
-        //------------ thjird return
+        //------------  return, no books are on loan
 
         librarySystem.returnBooks(Arrays.asList(book3, book4));
 

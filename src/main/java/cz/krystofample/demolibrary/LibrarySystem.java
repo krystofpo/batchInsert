@@ -39,13 +39,18 @@ public class LibrarySystem {
 
         //TODO
         Loan loan = new Loan();
-        loanRepo.save(loan);
+        loan = loanRepo.save(loan);
 
         assignLoanToBooks(loan);
+        assignBooksToLoan(loan);
         assignUserToLoan(loan);
         assignLoanToUser(loan);
 
 
+    }
+
+    private void assignBooksToLoan(Loan loan) {
+        loan.getBooks().addAll(persistedBooks);
     }
 
 
@@ -56,7 +61,7 @@ public class LibrarySystem {
     }
 
     private void assignLoanToOneBook(Book book, Loan loan) {
-        book.getLoans().add(loan);
+        book.setLoan(loan);
     }
 
     private void assignUserToLoan(Loan loan) {
@@ -70,7 +75,10 @@ public class LibrarySystem {
 
     private void validateParametersAndLoadUserAndBooks(List<Book> books, User user) {
         validateAndLoadUser(user);
+        validateAndLoadBooks(books);
+    }
 
+    private void validateAndLoadBooks(List<Book> books) {
         this.persistedBooks.clear();
         for (Book book : books) {
             validateAndLoadBook(book);
@@ -102,7 +110,10 @@ public class LibrarySystem {
         this.persistedBooks.add(persistedBook.get());
     }
 
+    @Transactional
     public void returnBooks(List<Book> books) {
-        //TODO
+        validateAndLoadBooks(books);
+
+
     }
 }

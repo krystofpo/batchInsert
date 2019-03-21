@@ -20,3 +20,6 @@ tranacntiolan
  transakce require new a isolatiuon level, dirities testy a main kod
 
  udela tporifil na test a prod zvlastn, pro testy nastavit priofily, jina db
+
+
+ lib system refacotr aby prio pujcovani se loan ulozilo tkay do fieldu

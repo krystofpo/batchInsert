@@ -1,8 +1,10 @@
 package cz.krystofample.demolibrary;
 
 import cz.krystofample.demolibrary.entities.Book;
+import cz.krystofample.demolibrary.entities.Loan;
 import cz.krystofample.demolibrary.entities.User;
 import cz.krystofample.demolibrary.repositories.BookRepo;
+import cz.krystofample.demolibrary.repositories.LoanRepo;
 import cz.krystofample.demolibrary.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class TestUtil {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private LoanRepo loanRepo;
 
     @Transactional
     public Book persistAndReturnNewBook() {
@@ -40,6 +45,12 @@ public class TestUtil {
     @Transactional
     public Book reloadBook(Book book) {
         return bookRepo.findById(book.getId()).get();
+    }
+
+
+    @Transactional
+    public Loan reloadLoan(Loan loan) {
+        return loanRepo.findById(loan.getId()).get();
     }
 
 }

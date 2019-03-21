@@ -1,0 +1,18 @@
+equakl hashcode
+misto drop tabels vlaidate epxort ddl schema liquibase
+
+sdileni contextu v testech
+
+rest endiopitn posle list id nebo list books?
+
+do testu helper metody na uklada ni entit
+
+suepr a after v testech
+
+tranacntiolan
+ a fetchjing lazy
+
+ h2 console  nebo jen debug pri testu podivat ideou?
+
+ zmenu stavu nedela knihovana, ale vola user.borroow books, zapouzdreni, demeter law
+ constriant primary key?

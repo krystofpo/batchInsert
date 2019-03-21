@@ -9,7 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -23,12 +25,25 @@ public class User {
 
     private String name;
 
-    @OneToMany
-    private List<Loan> loans;
+    @OneToMany(mappedBy = "user")
+    private List<Loan> loans = new ArrayList<>();
 
     private boolean hasLoans;
 
     public boolean hasLoans() {
         return hasLoans;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(getId(), user.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

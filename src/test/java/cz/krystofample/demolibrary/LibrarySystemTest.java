@@ -14,13 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = DemolibraryApplication.class)
+@SpringBootTest(classes = {TestConfig.class})
 public class LibrarySystemTest {
 
     @Autowired
@@ -35,6 +36,9 @@ public class LibrarySystemTest {
     @Autowired
     LibrarySystem librarySystem;
 
+    @Autowired
+    TestUtil testUtil;
+
     @Before
     public void setUp() throws Exception {
     }
@@ -44,20 +48,20 @@ public class LibrarySystemTest {
     }
 
     @Test
+    @Transactional
     public void borrowBooks() {
-
-        Book book1 = new Book();
-        Book book2 = new Book();
+        // -------------------------
+        //given
 
         bookRepo.deleteAll();
         userRepo.deleteAll();
         loanRepo.deleteAll();
 
-        bookRepo.save(book2);
-        bookRepo.save(book2);
+        Book book1 = testUtil.persistAndReturnNewBook();
+        Book book2 = testUtil.persistAndReturnNewBook();
 
-        User user = new User();
-        userRepo.save(user);
+
+        User user = testUtil.persistAndReturnNewUser();
 
         librarySystem.borrowBooks(Arrays.asList(book1, book2), user);
 
@@ -72,15 +76,19 @@ public class LibrarySystemTest {
 
         assertTrue(loanRepo.count() == 1L);
 
+        Book book3 = testUtil.persistAndReturnNewBook();
+        Book book4 = testUtil.persistAndReturnNewBook();
+
 //------------------------------------------
+        //when
 
-        Book book3 = new Book();
-        Book book4 = new Book();
-
-        bookRepo.save(book3);
-        bookRepo.save(book4);
 
         librarySystem.borrowBooks(Arrays.asList(book3, book4), user);
+
+        /////////----------------------------
+        //-------------- then
+
+        user = testUtil.reloadUser(user);
 
         assertTrue(user.getLoans().size() == 2);
         assertTrue(loanRepo.count() == 2L);
@@ -94,6 +102,77 @@ public class LibrarySystemTest {
     }
 
     @Test
+    @Transactional
     public void returnBooks() {
+
+        // given
+        bookRepo.deleteAll();
+        userRepo.deleteAll();
+        loanRepo.deleteAll();
+
+        Book book1 = testUtil.persistAndReturnNewBook();
+        Book book2 = testUtil.persistAndReturnNewBook();
+
+
+        User user = testUtil.persistAndReturnNewUser();
+
+        librarySystem.borrowBooks(Arrays.asList(book1, book2), user);
+
+        user = testUtil.reloadUser(user);
+
+        Loan loan = user.getLoans().get(0);
+//------------------------------------------
+
+        Book book3 = testUtil.persistAndReturnNewBook();
+        Book book4 = testUtil.persistAndReturnNewBook();
+
+
+        librarySystem.borrowBooks(Arrays.asList(book3, book4), user);
+
+
+        //---------------- when
+
+
+        librarySystem.returnBooks(Arrays.asList(book1));
+
+
+        // ----------then
+
+
+        book1 = testUtil.reloadBook(book1);
+        assertTrue(book1.getLoans().size() == 0);
+
+
+        assertTrue(loan.getUser().equals(user));
+        assertTrue(user.getLoans().contains(loan));
+        assertTrue(loanRepo.count() == 2L);
+
+        //======== second return
+
+        librarySystem.returnBooks(Arrays.asList(book2));
+
+        //==========then
+
+
+        book2 = testUtil.reloadBook(book2);
+        assertTrue(book2.getLoans().size() == 0);
+
+        assertTrue(loanRepo.count() == 1L);
+
+        //------------ thjird return
+
+        librarySystem.returnBooks(Arrays.asList(book3, book4));
+
+        //--------------then
+
+        assertTrue(loanRepo.count() == 0L);
+        user = testUtil.reloadUser(user);
+        assertTrue(user.hasLoans() == false);
+        assertTrue(user.getLoans().size() == 0);
+
+
+
     }
+
+
 }

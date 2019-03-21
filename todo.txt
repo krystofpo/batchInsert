@@ -16,3 +16,7 @@ tranacntiolan
 
  zmenu stavu nedela knihovana, ale vola user.borroow books, zapouzdreni, demeter law
  constriant primary key?
+
+ transakce require new a isolatiuon level, dirities testy a main kod
+
+ udela tporifil na test a prod zvlastn, pro testy nastavit priofily, jina db

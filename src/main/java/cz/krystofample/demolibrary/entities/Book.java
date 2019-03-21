@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,10 +25,4 @@ public class User {
 
     @OneToMany
     private List<Loan> loans;
-
-    private boolean hasLoans;
-
-    public boolean hasLoans() {
-        return hasLoans;
-    }
 }

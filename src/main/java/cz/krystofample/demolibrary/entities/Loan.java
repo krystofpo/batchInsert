@@ -8,14 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.List;
+import javax.persistence.ManyToOne;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Loan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,12 +22,6 @@ public class User {
 
     private String name;
 
-    @OneToMany
-    private List<Loan> loans;
-
-    private boolean hasLoans;
-
-    public boolean hasLoans() {
-        return hasLoans;
-    }
+    @ManyToOne
+    private User user;
 }

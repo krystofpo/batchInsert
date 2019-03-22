@@ -3,7 +3,10 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <changeSet author="krystof.polansky" id="1">
-        <sqlFile path="src/main/resources/schema_init.sql"/>
+        <sqlFile path="src/main/resources/schema_init_scripts.sql"/>
+    </changeSet>
+    <changeSet author="krystof.polansky" id="2">
+        <sqlFile path="src/main/resources/fill_sample_data.sql"/>
     </changeSet>
 
 </databaseChangeLog>

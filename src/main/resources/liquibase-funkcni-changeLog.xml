@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="krystof.polansky (generated)" id="1553277799506-1">
+        <createSequence sequenceName="id_seq"/>
+    </changeSet>
+    <changeSet author="krystof.polansky (generated)" id="1553277799506-2">
+        <createTable tableName="Book">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="loan_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="krystof.polansky (generated)" id="1553277799506-3">
+        <createTable tableName="Loan">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="krystof.polansky (generated)" id="1553277799506-4">
+        <createTable tableName="User">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hasLoans" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="krystof.polansky (generated)" id="1553277799506-5">
+        <addPrimaryKey columnNames="id" constraintName="BookPK" tableName="Book"/>
+    </changeSet>
+    <changeSet author="krystof.polansky (generated)" id="1553277799506-6">
+        <addPrimaryKey columnNames="id" constraintName="LoanPK" tableName="Loan"/>
+    </changeSet>
+    <changeSet author="krystof.polansky (generated)" id="1553277799506-7">
+        <addPrimaryKey columnNames="id" constraintName="UserPK" tableName="User"/>
+    </changeSet>
+    <changeSet author="krystof.polansky (generated)" id="1553277799506-8">
+        <addForeignKeyConstraint baseColumnNames="loan_id" baseTableName="Book"
+                                 constraintName="FK_84hs0u3lu0gstf3ax1rgpc6xe" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="Loan"/>
+    </changeSet>
+    <changeSet author="krystof.polansky (generated)" id="1553277799506-9">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="Loan"
+                                 constraintName="FK_8iyyajvtwyscdd2ni257rgwxv" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="User"/>
+    </changeSet>
+</databaseChangeLog>

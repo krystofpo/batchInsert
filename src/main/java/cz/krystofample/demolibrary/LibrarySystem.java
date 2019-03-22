@@ -6,6 +6,8 @@ import cz.krystofample.demolibrary.entities.User;
 import cz.krystofample.demolibrary.repositories.BookRepo;
 import cz.krystofample.demolibrary.repositories.LoanRepo;
 import cz.krystofample.demolibrary.repositories.UserRepo;
+import cz.krystofample.demolibrary.web.BookRequest;
+import cz.krystofample.demolibrary.web.UserAndBooksRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,22 +42,23 @@ public class LibrarySystem {
     private Logger log = LoggerFactory.getLogger(LibrarySystem.class);
 
     @Transactional
-    public void borrowBooks(List<Book> books, User user) {
+    public User borrowBooks(List<Book> books, User user) {
         validateParametersAndLoadUserAndBooks(books, user);
 
         Loan loan = new Loan();
         loan = loanRepo.save(loan);
 
-        assignLoanToBooks(loan);
         assignBooksToLoan(loan);
+        assignLoanToBooks(loan);
         assignUserToLoan(loan);
         assignLoanToUser(loan);
         log.info("User with id " + user.getId() + " borrowed " + books.size() + " books.");
 
+        return persistedUser;
     }
 
     @Transactional
-    public void returnBook(Book book) {
+    public User returnBook(Book book) {
         validateAndLoadBooks(Arrays.asList(book));
         loadLoan();
         loadUserFromLoan();
@@ -65,6 +68,44 @@ public class LibrarySystem {
         ifUserHasNoLoansChangeStatus();
         log.info("User with id " + persistedUser.getId() + " returned book with id " + book.getId());
 
+        return persistedUser;
+    }
+
+    public User borrowBooks(UserAndBooksRequest userAndBooksRequest) {
+        User user = convertUserFromRequest(userAndBooksRequest);
+        List<Book> books = convertBooksFromRequest(userAndBooksRequest);
+        return borrowBooks(books, user);
+    }
+
+    public User returnBook(BookRequest bookRequest) {
+        Book book = convertBookFromRequest(bookRequest);
+        return returnBook(book);
+    }
+
+    private Book convertBookFromRequest(BookRequest bookRequest) {
+        Book book = new Book();
+        book.setId(bookRequest.getId());
+        return book;
+    }
+
+    private List<Book> convertBooksFromRequest(UserAndBooksRequest userAndBooksRequest) {
+        List<Book> books = new ArrayList<>();
+        for (BookRequest bookRequest : userAndBooksRequest.getBookRequests()) {
+            addToBooks(books, bookRequest);
+        }
+        return books;
+    }
+
+    private void addToBooks(List<Book> books, BookRequest bookRequest) {
+        Book book = new Book();
+        book.setId(bookRequest.getId());
+        books.add(book);
+    }
+
+    private User convertUserFromRequest(UserAndBooksRequest userAndBooksRequest) {
+        User user = new User();
+        user.setId(userAndBooksRequest.getUserRequest().getId());
+        return user;
     }
 
     private void loadUserFromLoan() {
@@ -77,6 +118,7 @@ public class LibrarySystem {
 
     private void assignBooksToLoan(Loan loan) {
         loan.getBooks().addAll(persistedBooks);
+        loanRepo.save(loan);
     }
 
 
@@ -88,15 +130,18 @@ public class LibrarySystem {
 
     private void assignLoanToOneBook(Book book, Loan loan) {
         book.setLoan(loan);
+        bookRepo.save(book);
     }
 
     private void assignUserToLoan(Loan loan) {
         loan.setUser(persistedUser);
+        loanRepo.save(loan);
     }
 
     private void assignLoanToUser(Loan loan) {
         persistedUser.getLoans().add(loan);
         persistedUser.setHasLoans(true);
+        userRepo.save(persistedUser);
     }
 
     private void validateParametersAndLoadUserAndBooks(List<Book> books, User user) {
@@ -152,6 +197,7 @@ public class LibrarySystem {
     private void ifUserHasNoLoansChangeStatus() {
         if (persistedUser.getLoans().size() == 0) {
             persistedUser.setHasLoans(false);
+            userRepo.save(persistedUser);
         }
     }
 
@@ -159,16 +205,19 @@ public class LibrarySystem {
         if (persistedLoan.getBooks().size() == 0) {
             persistedLoan.setUser(null);
             persistedUser.getLoans().remove(persistedLoan);
+            userRepo.save(persistedUser);
             loanRepo.delete(persistedLoan);
         }
     }
 
     private void removeBookFromLoan() {
         persistedLoan.getBooks().remove(persistedBooks.get(0));
+        loanRepo.save(persistedLoan);
     }
 
     private void removeLoanFromBook() {
         persistedBooks.get(0).setLoan(null);
+        bookRepo.save(persistedBooks.get(0));
     }
 
     private void loadLoan() {

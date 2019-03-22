@@ -57,6 +57,7 @@ public class LibraryConfig {
         dataSourceConfig.setJdbcUrl(dbUrl);
         dataSourceConfig.setUsername(dbUsername);
         dataSourceConfig.setPassword(dbPassword);
+        dataSourceConfig.setMaximumPoolSize(5);
         return new HikariDataSource(dataSourceConfig);
     }
 

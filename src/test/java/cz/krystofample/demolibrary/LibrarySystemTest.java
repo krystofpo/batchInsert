@@ -138,7 +138,7 @@ public class LibrarySystemTest {
         user = testUtil.reloadUser(user);
 
         Loan loan = user.getLoans().get(0);
-//------------------------------------------
+
 
         Book book3 = testUtil.persistAndReturnNewBook();
         Book book4 = testUtil.persistAndReturnNewBook();

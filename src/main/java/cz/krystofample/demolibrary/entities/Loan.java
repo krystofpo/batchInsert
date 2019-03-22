@@ -1,5 +1,6 @@
 package cz.krystofample.demolibrary.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,10 +28,10 @@ public class Loan {
     @SequenceGenerator(name = "id_generator", sequenceName = "id_seq", allocationSize = 50)
     private Long id;
 
-    private String name;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "loan")
@@ -47,5 +48,12 @@ public class Loan {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Loan{" +
+                "id=" + id +
+                '}';
     }
 }

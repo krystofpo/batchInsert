@@ -30,7 +30,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Loan> loans = new ArrayList<>();
 
-    private boolean hasLoans;
+    private boolean hasLoans = false;
 
     public boolean hasLoans() {
         return hasLoans;
@@ -47,5 +47,15 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", loans=" + loans +
+                ", hasLoans=" + hasLoans +
+                '}';
     }
 }

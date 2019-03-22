@@ -1,0 +1,6 @@
+for borrowing books
+{"userRequest":{"id":1},"bookRequests":[{"id":1},{"id":2}]}
+
+
+for returning book
+{"id":1}

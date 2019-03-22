@@ -1,4 +1,4 @@
-package cz.krystofample.demolibrary;
+package cz.krystof.demolibrary;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @Import(LibraryConfig.class)
-public class DemolibraryApplication {
+public class LibraryApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemolibraryApplication.class, args);
+        SpringApplication.run(LibraryApplication.class, args);
     }
 
 }

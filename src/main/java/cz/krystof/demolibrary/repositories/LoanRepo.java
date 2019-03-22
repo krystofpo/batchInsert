@@ -1,6 +1,6 @@
-package cz.krystofample.demolibrary.repositories;
+package cz.krystof.demolibrary.repositories;
 
-import cz.krystofample.demolibrary.entities.Loan;
+import cz.krystof.demolibrary.entities.Loan;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

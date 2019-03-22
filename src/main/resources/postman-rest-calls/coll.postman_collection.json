@@ -1,0 +1,189 @@
+{
+  "info": {
+    "_postman_id": "7521152f-2215-495e-a709-5f4c98280cd6",
+    "name": "coll",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1 borrow 1, 2",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"userRequest\":{\"id\":1},\"bookRequests\":[{\"id\":1},{\"id\":2}]}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/borrow",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "borrow"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "borrow error",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"userRequest\":{\"id\":1},\"bookRequests\":[{\"id\":3},{\"id\":2}]}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/borrow",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "borrow"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2 return 1",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\":1}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/return",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "return"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3 borrow 1",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"userRequest\":{\"id\":1},\"bookRequests\":[{\"id\":1}]}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/borrow",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "borrow"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4 return 2",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\":2}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/return",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "return"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "5 return 1 no loans",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\":1}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/return",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "return"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

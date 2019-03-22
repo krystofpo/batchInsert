@@ -1,4 +1,4 @@
-package cz.krystofample.demolibrary.entities;
+package cz.krystof.demolibrary.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

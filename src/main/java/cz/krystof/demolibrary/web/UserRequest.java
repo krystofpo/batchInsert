@@ -1,4 +1,4 @@
-package cz.krystofample.demolibrary.web;
+package cz.krystof.demolibrary.web;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookRequest {
-    private Long Id;
+public class UserRequest {
+    private Long id;
 }

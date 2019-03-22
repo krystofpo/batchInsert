@@ -1,11 +1,11 @@
-package cz.krystofample.demolibrary;
+package cz.krystof.demolibrary;
 
-import cz.krystofample.demolibrary.entities.Book;
-import cz.krystofample.demolibrary.entities.Loan;
-import cz.krystofample.demolibrary.entities.User;
-import cz.krystofample.demolibrary.repositories.BookRepo;
-import cz.krystofample.demolibrary.repositories.LoanRepo;
-import cz.krystofample.demolibrary.repositories.UserRepo;
+import cz.krystof.demolibrary.entities.Book;
+import cz.krystof.demolibrary.entities.Loan;
+import cz.krystof.demolibrary.entities.User;
+import cz.krystof.demolibrary.repositories.BookRepo;
+import cz.krystof.demolibrary.repositories.LoanRepo;
+import cz.krystof.demolibrary.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +26,13 @@ public class TestUtil {
     private LoanRepo loanRepo;
 
     @Transactional
-    public Book persistAndReturnNewBook() {
+    public Book persistAndGetNewBook() {
         Book book = new Book();
         return bookRepo.save(book);
     }
 
     @Transactional
-    public User persistAndReturnNewUser() {
+    public User persistAndGetNewUser() {
         User user = new User();
         return userRepo.save(user);
     }

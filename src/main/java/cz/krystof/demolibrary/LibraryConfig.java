@@ -1,9 +1,7 @@
-package cz.krystofample.demolibrary;
+package cz.krystof.demolibrary;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,11 +17,8 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = {
-        "cz.krystofample.demolibrary.repositories"})
+@EnableJpaRepositories(basePackages = {"cz.krystof.demolibrary.repositories"})
 public class LibraryConfig {
-
-    Logger log = LoggerFactory.getLogger(LibraryConfig.class);
 
     @Value("${db.driver}")
     private String dbDriver;
@@ -66,7 +61,7 @@ public class LibraryConfig {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        entityManagerFactoryBean.setPackagesToScan("cz.krystofample.demolibrary.entities");
+        entityManagerFactoryBean.setPackagesToScan("cz.krystof.demolibrary.entities");
 
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.dialect", hibernateDialect);

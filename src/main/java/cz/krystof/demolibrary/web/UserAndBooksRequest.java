@@ -1,4 +1,4 @@
-package cz.krystofample.demolibrary.web;
+package cz.krystof.demolibrary.web;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

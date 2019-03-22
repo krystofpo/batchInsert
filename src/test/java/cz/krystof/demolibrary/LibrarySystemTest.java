@@ -1,13 +1,11 @@
-package cz.krystofample.demolibrary;
+package cz.krystof.demolibrary;
 
-import cz.krystofample.demolibrary.entities.Book;
-import cz.krystofample.demolibrary.entities.Loan;
-import cz.krystofample.demolibrary.entities.User;
-import cz.krystofample.demolibrary.repositories.BookRepo;
-import cz.krystofample.demolibrary.repositories.LoanRepo;
-import cz.krystofample.demolibrary.repositories.UserRepo;
-import org.junit.After;
-import org.junit.Before;
+import cz.krystof.demolibrary.entities.Book;
+import cz.krystof.demolibrary.entities.Loan;
+import cz.krystof.demolibrary.entities.User;
+import cz.krystof.demolibrary.repositories.BookRepo;
+import cz.krystof.demolibrary.repositories.LoanRepo;
+import cz.krystof.demolibrary.repositories.UserRepo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +37,6 @@ public class LibrarySystemTest {
     @Autowired
     TestUtil testUtil;
 
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     @Transactional
     public void borrowBooks() {
@@ -57,11 +47,10 @@ public class LibrarySystemTest {
         userRepo.deleteAll();
         loanRepo.deleteAll();
 
-        Book book1 = testUtil.persistAndReturnNewBook();
-        Book book2 = testUtil.persistAndReturnNewBook();
+        Book book1 = testUtil.persistAndGetNewBook();
+        Book book2 = testUtil.persistAndGetNewBook();
 
-
-        User user = testUtil.persistAndReturnNewUser();
+        User user = testUtil.persistAndGetNewUser();
 
 
         // when
@@ -89,8 +78,8 @@ public class LibrarySystemTest {
 
         //given
 
-        Book book3 = testUtil.persistAndReturnNewBook();
-        Book book4 = testUtil.persistAndReturnNewBook();
+        Book book3 = testUtil.persistAndGetNewBook();
+        Book book4 = testUtil.persistAndGetNewBook();
 
 //------------------------------------------
         //when
@@ -127,22 +116,18 @@ public class LibrarySystemTest {
         userRepo.deleteAll();
         loanRepo.deleteAll();
 
-        Book book1 = testUtil.persistAndReturnNewBook();
-        Book book2 = testUtil.persistAndReturnNewBook();
+        Book book1 = testUtil.persistAndGetNewBook();
+        Book book2 = testUtil.persistAndGetNewBook();
+        Book book3 = testUtil.persistAndGetNewBook();
+        Book book4 = testUtil.persistAndGetNewBook();
 
 
-        User user = testUtil.persistAndReturnNewUser();
+        User user = testUtil.persistAndGetNewUser();
 
         librarySystem.borrowBooks(Arrays.asList(book1, book2), user);
 
         user = testUtil.reloadUser(user);
-
-        Loan loan = user.getLoans().get(0);
-
-
-        Book book3 = testUtil.persistAndReturnNewBook();
-        Book book4 = testUtil.persistAndReturnNewBook();
-
+        Loan loan1 = user.getLoans().get(0);
 
         librarySystem.borrowBooks(Arrays.asList(book3, book4), user);
 
@@ -157,18 +142,17 @@ public class LibrarySystemTest {
 
         user = testUtil.reloadUser(user);
         book1 = testUtil.reloadBook(book1);
-
-        loan = testUtil.reloadLoan(loan);
+        loan1 = testUtil.reloadLoan(loan1);
 
         assertTrue(book1.getLoan() == null);
 
-        assertTrue(user.getLoans().contains(loan));
+        assertTrue(user.getLoans().contains(loan1));
         assertTrue(user.getLoans().size() == 2);
         assertTrue(loanRepo.count() == 2L);
 
-        assertTrue(loan.getBooks().size() == 1);
-        assertTrue(loan.getBooks().contains(book2));
-        assertTrue(loan.getUser().equals(user));
+        assertTrue(loan1.getBooks().size() == 1);
+        assertTrue(loan1.getBooks().contains(book2));
+        assertTrue(loan1.getUser().equals(user));
 
         //======== second return, loan1 deleted, loan2 exists
 

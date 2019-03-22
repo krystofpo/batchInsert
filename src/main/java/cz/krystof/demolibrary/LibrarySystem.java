@@ -1,14 +1,13 @@
-package cz.krystofample.demolibrary;
+package cz.krystof.demolibrary;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import cz.krystofample.demolibrary.entities.Book;
-import cz.krystofample.demolibrary.entities.Loan;
-import cz.krystofample.demolibrary.entities.QBook;
-import cz.krystofample.demolibrary.entities.QLoan;
-import cz.krystofample.demolibrary.entities.QUser;
-import cz.krystofample.demolibrary.entities.User;
-import cz.krystofample.demolibrary.web.BookRequest;
-import cz.krystofample.demolibrary.web.UserAndBooksRequest;
+import cz.krystof.demolibrary.entities.Book;
+import cz.krystof.demolibrary.entities.Loan;
+import cz.krystof.demolibrary.entities.QBook;
+import cz.krystof.demolibrary.entities.QUser;
+import cz.krystof.demolibrary.entities.User;
+import cz.krystof.demolibrary.web.BookRequest;
+import cz.krystof.demolibrary.web.UserAndBooksRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,20 +22,15 @@ import java.util.List;
 @Service
 public class LibrarySystem {
 
-
     @PersistenceContext
     EntityManager em;
 
     private QBook book = QBook.book;
     private QUser user = QUser.user;
-    private QLoan loan = QLoan.loan;
-
     private JPAQueryFactory query;
 
     private User persistedUser;
-
     private List<Book> persistedBooks = new ArrayList<>();
-
     private Loan persistedLoan;
 
     private Logger log = LoggerFactory.getLogger(LibrarySystem.class);
@@ -56,12 +50,6 @@ public class LibrarySystem {
         em.flush();
         log.info("User with id " + user.getId() + " borrowed " + books.size() + " books.");
         return persistedUser;
-    }
-
-    private void initJPAQuery() {
-        if (query == null) {
-            query = new JPAQueryFactory(em);
-        }
     }
 
     @Transactional
@@ -91,6 +79,12 @@ public class LibrarySystem {
     public User returnBook(BookRequest bookRequest) {
         Book book = convertBookFromRequest(bookRequest);
         return returnBook(book);
+    }
+
+    private void initJPAQuery() {
+        if (query == null) {
+            query = new JPAQueryFactory(em);
+        }
     }
 
     private Book convertBookFromRequest(BookRequest bookRequest) {
@@ -173,6 +167,7 @@ public class LibrarySystem {
         if (user == null) {
             logErrorAndThrow("user cannot be null");
         }
+
         if (user.getId() == null) {
             logErrorAndThrow("user id cannot be null");
         }

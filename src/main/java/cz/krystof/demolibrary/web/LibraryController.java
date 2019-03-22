@@ -1,8 +1,8 @@
-package cz.krystofample.demolibrary.web;
+package cz.krystof.demolibrary.web;
 
 
-import cz.krystofample.demolibrary.LibrarySystem;
-import cz.krystofample.demolibrary.entities.User;
+import cz.krystof.demolibrary.LibrarySystem;
+import cz.krystof.demolibrary.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;

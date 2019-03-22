@@ -6,6 +6,8 @@ import cz.krystofample.demolibrary.entities.User;
 import cz.krystofample.demolibrary.repositories.BookRepo;
 import cz.krystofample.demolibrary.repositories.LoanRepo;
 import cz.krystofample.demolibrary.repositories.UserRepo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,12 +37,12 @@ public class LibrarySystem {
 
     private Loan persistedLoan;
 
+    private Logger log = LoggerFactory.getLogger(LibrarySystem.class);
+
     @Transactional
     public void borrowBooks(List<Book> books, User user) {
         validateParametersAndLoadUserAndBooks(books, user);
 
-
-        //TODO
         Loan loan = new Loan();
         loan = loanRepo.save(loan);
 
@@ -48,8 +50,29 @@ public class LibrarySystem {
         assignBooksToLoan(loan);
         assignUserToLoan(loan);
         assignLoanToUser(loan);
+        log.info("User with id " + user.getId() + " borrowed " + books.size() + " books.");
 
+    }
 
+    @Transactional
+    public void returnBook(Book book) {
+        validateAndLoadBooks(Arrays.asList(book));
+        loadLoan();
+        loadUserFromLoan();
+        removeLoanFromBook();
+        removeBookFromLoan();
+        ifLoanIsEmptyRemoveFromUserAndDeleteIt();
+        ifUserHasNoLoansChangeStatus();
+        log.info("User with id " + persistedUser.getId() + " returned book with id " + book.getId());
+
+    }
+
+    private void loadUserFromLoan() {
+        persistedUser = null;
+        persistedUser = persistedLoan.getUser();
+        if (persistedUser == null) {
+            logErrorAndThrow("loan with id " + persistedLoan.getId() + " has no user");
+        }
     }
 
     private void assignBooksToLoan(Loan loan) {
@@ -90,41 +113,40 @@ public class LibrarySystem {
 
     private void validateAndLoadUser(User user) {
         this.persistedUser = null;
+
+        if (user == null) {
+            logErrorAndThrow("user cannot be null");
+        }
         if (user.getId() == null) {
-            throw new IllegalArgumentException("user id cannot be null");
+            logErrorAndThrow("user id cannot be null");
         }
 
         Optional<User> persistedUser = userRepo.findById(user.getId());
         if (!persistedUser.isPresent()) {
-            throw new IllegalArgumentException("user with id " + user.getId() + " does not exist in DB");
+            logErrorAndThrow("user with id " + user.getId() + " does not exist in DB");
         }
         this.persistedUser = persistedUser.get();
     }
 
+    private void logErrorAndThrow(String errorMessage) {
+        log.error(errorMessage);
+        throw new IllegalArgumentException(errorMessage);
+    }
+
     private void validateAndLoadBook(Book book) {
+        if (book == null) {
+            logErrorAndThrow("book cannot be null");
+        }
+
         if (book.getId() == null) {
-            throw new IllegalArgumentException("book id cannot be null");
+            logErrorAndThrow("book id cannot be null");
         }
 
         Optional<Book> persistedBook = bookRepo.findById(book.getId());
         if (!persistedBook.isPresent()) {
-            throw new IllegalArgumentException("book with id " + book.getId() + " does not exist in DB");
+            logErrorAndThrow("book with id " + book.getId() + " does not exist in DB");
         }
         this.persistedBooks.add(persistedBook.get());
-    }
-
-    @Transactional
-    public void returnBook(Book book) {
-        validateAndLoadBooks(Arrays.asList(book));
-        loadLoan();
-        persistedUser = null;
-        persistedUser = persistedLoan.getUser();
-        removeLoanFromBook();
-        removeBookFromLoan();
-        ifLoanIsEmptyRemoveFromUserAndDeleteIt();
-        ifUserHasNoLoansChangeStatus();
-
-
     }
 
     private void ifUserHasNoLoansChangeStatus() {
@@ -152,5 +174,8 @@ public class LibrarySystem {
     private void loadLoan() {
         persistedLoan = null;
         persistedLoan = persistedBooks.get(0).getLoan();
+        if (persistedLoan == null) {
+            logErrorAndThrow("book id " + persistedBooks.get(0).getId() + " is not part of any loan");
+        }
     }
 }

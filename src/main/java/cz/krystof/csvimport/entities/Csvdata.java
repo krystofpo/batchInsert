@@ -14,13 +14,14 @@ import javax.persistence.Version;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CsvData {
+public class Csvdata {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    private String firstName;
+    private String lastName;
 
     @Version
     private Long version;

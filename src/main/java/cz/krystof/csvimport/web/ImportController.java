@@ -16,7 +16,7 @@ public class ImportController {
 
     @GetMapping("/import")
     @ResponseBody
-    public ResponseEntity csvImport() {
+    public ResponseEntity csvImport() throws Exception {
         return importSystem.csvImport();
     }
 

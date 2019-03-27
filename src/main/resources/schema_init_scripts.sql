@@ -1,46 +1,31 @@
+CREATE TABLE Book
+(
+  id      BIGINT AUTO_INCREMENT NOT NULL,
+  loan_id BIGINT                NULL,
+  CONSTRAINT BookPK PRIMARY KEY (id)
+) engine = InnoDB;
 
-drop table Book if exists;
-
-
-drop table Loan if exists;
-
-
-drop table User if exists;
-
-drop sequence if exists id_seq;
-create sequence id_seq;
-
-
-    create table Book (
-       id bigint not null,
-        name varchar(255),
-        loan_id bigint,
-        primary key (id)
-    );
-
-    create table Loan (
-       id bigint not null,
-        name varchar(255),
-        user_id bigint,
-        primary key (id)
-    );
+CREATE TABLE Loan
+(
+  id      BIGINT AUTO_INCREMENT NOT NULL,
+  user_id BIGINT                NULL,
+  CONSTRAINT LoanPK PRIMARY KEY (id)
+) engine = InnoDB;
 
 
-    create table User (
-       id bigint not null,
-        hasLoans boolean not null,
-        name varchar(255),
-        primary key (id)
-    );
+CREATE TABLE User
+(
+  id       BIGINT AUTO_INCREMENT NOT NULL,
+  hasLoans BIT(1)                NOT NULL,
+  name     VARCHAR(255)          NULL,
+  CONSTRAINT UserPK PRIMARY KEY (id)
+) engine = InnoDB;
+
+ALTER TABLE Book
+  ADD CONSTRAINT
+    FK_84hs0u3lu0gstf3ax1rgpc6xe FOREIGN KEY (loan_id) REFERENCES Loan (id);
 
 
-    alter table Book
-       add constraint "FK_BOOK_LOAN"
-       foreign key (loan_id)
-       references Loan;
-
-
-    alter table Loan
-       add constraint "FK_LOAN_USER"
-       foreign key (user_id)
-       references User;
+ALTER TABLE Loan
+  ADD CONSTRAINT
+    FK_8iyyajvtwyscdd2ni257rgwxv FOREIGN KEY (user_id) REFERENCES User (id);

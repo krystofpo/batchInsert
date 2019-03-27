@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class LibraryController {
+public class ImportController {
 
     @Autowired
     ImportSystem importSystem;

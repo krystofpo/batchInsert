@@ -60,7 +60,16 @@
         </dependency>
 
 
-
+        <dependency>
+            <groupId>au.com.anthonybruno</groupId>
+            <artifactId>SdGen</artifactId>
+            <version>0.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>0.14</version>
+        </dependency>
 
 
     </dependencies>

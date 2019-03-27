@@ -1,15 +1,15 @@
-package cz.krystof.demolibrary;
+package cz.krystof.csvimport;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import(LibraryConfig.class)
-public class LibraryApplication {
+@Import(ImportConfig.class)
+public class ImportApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(LibraryApplication.class, args);
+        SpringApplication.run(ImportApplication.class, args);
     }
 
 }

@@ -1,4 +1,4 @@
-package cz.krystof.demolibrary;
+package cz.krystof.csvimport;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -17,8 +17,8 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = {"cz.krystof.demolibrary.repositories"})
-public class LibraryConfig {
+@EnableJpaRepositories(basePackages = {"cz.krystof.csvimport.repositories"})
+public class ImportConfig {
 
     @Value("${db.driver}")
     private String dbDriver;
@@ -61,7 +61,7 @@ public class LibraryConfig {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        entityManagerFactoryBean.setPackagesToScan("cz.krystof.demolibrary.entities");
+        entityManagerFactoryBean.setPackagesToScan("cz.krystof.csvimport.entities");
 
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.dialect", hibernateDialect);

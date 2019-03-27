@@ -1,8 +1,11 @@
-INSERT INTO User (ID, HASLOANS, NAME)
-VALUES (1, false, 'k');
-INSERT INTO User (HASLOANS, NAME)
-VALUES (false, 'l');
-INSERT INTO Book (ID, LOAN_ID)
-VALUES (1, null);
-INSERT INTO Book (ID, LOAN_ID)
-VALUES (2, null);
+INSERT INTO User (ID, HASLOANS, NAME, version)
+VALUES (1, false, 'k', 1);
+
+INSERT INTO User (HASLOANS, NAME, version)
+VALUES (false, 'l', 1);
+
+INSERT INTO Book (ID, LOAN_ID, version)
+VALUES (1, null, 1);
+
+INSERT INTO Book (ID, LOAN_ID, version)
+VALUES (2, null, 1);

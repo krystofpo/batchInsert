@@ -2,6 +2,7 @@ CREATE TABLE Book
 (
   id      BIGINT AUTO_INCREMENT NOT NULL,
   loan_id BIGINT                NULL,
+  version BIGINT                NULL,
   CONSTRAINT BookPK PRIMARY KEY (id)
 ) engine = InnoDB;
 
@@ -9,6 +10,7 @@ CREATE TABLE Loan
 (
   id      BIGINT AUTO_INCREMENT NOT NULL,
   user_id BIGINT                NULL,
+  version BIGINT                NULL,
   CONSTRAINT LoanPK PRIMARY KEY (id)
 ) engine = InnoDB;
 
@@ -18,6 +20,7 @@ CREATE TABLE User
   id       BIGINT AUTO_INCREMENT NOT NULL,
   hasLoans BIT(1)                NOT NULL,
   name     VARCHAR(255)          NULL,
+  version  BIGINT                NULL,
   CONSTRAINT UserPK PRIMARY KEY (id)
 ) engine = InnoDB;
 

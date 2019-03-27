@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +35,9 @@ public class Loan {
 
     @OneToMany(mappedBy = "loan")
     private List<Book> books = new ArrayList<>();
+
+    @Version
+    private Long version;
 
     @Override
     public boolean equals(Object o) {

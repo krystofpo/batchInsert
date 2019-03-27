@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 import java.util.Objects;
 
 @Entity
@@ -28,6 +29,9 @@ public class Book {
     @JoinColumn(name = "loan_id")
     @JsonIgnore
     private Loan loan;
+
+    @Version
+    private Long version;
 
     @Override
     public boolean equals(Object o) {
